@@ -1,4 +1,0 @@
-FROM php:7.1-apache
-
-RUN echo '<?php echo "slave: " . phpversion() . PHP_EOL ;' > index.php && \
-	echo '<?php echo file_get_contents("http://one/index.php");' > curl.php

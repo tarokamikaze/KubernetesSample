@@ -1,4 +1,0 @@
-FROM php:7.1-apache
-
-RUN echo '<?php echo "org: " . phpversion() . PHP_EOL ;' > index.php && \
-	echo '<?php echo file_get_contents("http://two/index.php");' > curl.php

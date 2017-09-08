@@ -9,20 +9,24 @@ spec:
     - port: 80
       nodePort: 30080
   selector:
-    app: wordpress
-    tier: frontend
+    release: master
+    tier: web
   #type: LoadBalancer
   type: NodePort
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: master1-deployment
+  name: master-deployment
+  labels:
+    app: wordpress
 spec:
-  replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
+        app: wordpress
         release: master
     spec:
       affinity:
@@ -36,7 +40,16 @@ spec:
                 - master
             topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: one
-        image: tarokamikaze/one:v1
+      - image: wordpress:4.8-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
         ports:
         - containerPort: 80
+          name: wordpress
