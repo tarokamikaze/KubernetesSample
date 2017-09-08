@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: master1
+  labels:
+    release: master
+spec:
+  ports:
+    - port: 80
+      nodePort: 30080
+  selector:
+    app: wordpress
+    tier: frontend
+  #type: LoadBalancer
+  type: NodePort
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: master1-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        release: master
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: release
+                operator: In
+                values:
+                - master
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: one
+        image: tarokamikaze/one:v1
+        ports:
+        - containerPort: 80
