@@ -19,6 +19,8 @@ metadata:
   labels:
     app: wordpress
 spec:
+  selector:
+    release: stable
   strategy:
     type: Recreate
   template:
@@ -27,16 +29,6 @@ spec:
         app: wordpress
         tier: mysql
     spec:
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: release
-                operator: In
-                values:
-                - master
-            topologyKey: "kubernetes.io/hostname"
       containers:
       - image: mysql:5.6
         name: mysql
