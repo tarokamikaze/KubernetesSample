@@ -20,7 +20,8 @@ metadata:
     app: wordpress
 spec:
   selector:
-    release: stable
+    matchLabels:
+      release: stable
   strategy:
     type: Recreate
   template:
