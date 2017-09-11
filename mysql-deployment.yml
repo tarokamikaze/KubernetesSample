@@ -43,9 +43,6 @@ metadata:
   labels:
     app: wordpress
 spec:
-  selector:
-    matchLabels:
-      release: stable
   strategy:
     type: Recreate
   template:
@@ -57,5 +54,14 @@ spec:
       containers:
       - image: mysql:5.6
         name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        ports:
+        - containerPort: 3306
+          name: mysql
       nodeSelector:
         release: stable
