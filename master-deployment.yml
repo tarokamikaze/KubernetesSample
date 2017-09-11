@@ -45,4 +45,4 @@ spec:
         - containerPort: 80
           name: wordpress
       nodeSelector:
-        release: stable
+        release: master
