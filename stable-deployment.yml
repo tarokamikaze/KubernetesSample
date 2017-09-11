@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-master
+  name: web-stable
   labels:
-    release: master
+    release: stable
 spec:
   ports:
     - port: 80
       nodePort: 30080
   selector:
-    release: master
+    release: stable
     tier: web
   #type: LoadBalancer
   type: NodePort
@@ -17,7 +17,7 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: master-deployment
+  name: stable-deployment
   labels:
     app: wordpress
 spec:
@@ -27,7 +27,7 @@ spec:
     metadata:
       labels:
         app: wordpress
-        release: master
+        release: stable
         tier: web
     spec:
       containers:
